@@ -175,7 +175,7 @@ public class CardDeliveryTest {
     @Test
     void cardTest10() {
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        $("[data-test-id=agreement]").click();
+        $("[data-test-id='agreement']").click();
         $x("//span[contains(text(),'Забронировать')]").click();
         $("[data-test-id=city].input_invalid .input__sub")
                 .shouldHave(Condition.text("Поле обязательно для заполнения"));
