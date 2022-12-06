@@ -9,6 +9,8 @@ import org.openqa.selenium.Keys;
 
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -16,6 +18,10 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class CardDeliveryTest {
+
+    public String generateDate(int days) {
+        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
 
 
     @BeforeEach
@@ -25,68 +31,52 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest1() {
+    void largeName() {
         $("[data-test-id=city] input").setValue("Калининград");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 5);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(4));
         $("[data-test-id=name] input").setValue("Ибн Аль-Банна Аль-Марракеши");
         $("[data-test-id=phone] input").setValue("+79993332211");
         $("[data-test-id=agreement]").click();
         $x("//span[contains(text(),'Забронировать')]").click();
         $("[data-test-id=notification")
-                .shouldHave(Condition.text("Успешно! Встреча успешно забронирована на " + miData),
+                .shouldHave(Condition.text("Успешно! Встреча успешно забронирована на " + generateDate(4)),
                         Duration.ofSeconds(15));
     }
 
     @Test
-    void cardTest2() {
+    void filledInCorrectly1() {
         $("[data-test-id=city] input").setValue("Москва");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 5);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(4));
         $("[data-test-id=name] input").setValue("Як Йоала");
         $("[data-test-id=phone] input").setValue("+71231231122");
         $("[data-test-id=agreement]").click();
         $x("//span[contains(text(),'Забронировать')]").click();
         $("[data-test-id=notification")
-                .shouldHave(Condition.text("Успешно! Встреча успешно забронирована на " + miData),
+                .shouldHave(Condition.text("Успешно! Встреча успешно забронирована на " + generateDate(4)),
                         Duration.ofSeconds(15));
     }
 
     @Test
-    void cardTest3() {
+    void filledInCorrectly2() {
         $("[data-test-id=city] input").setValue("Вологда");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 5);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(5));
         $("[data-test-id=name] input").setValue("Шаляпин Фёдор");
         $("[data-test-id=phone] input").setValue("+7456127892");
         $("[data-test-id=agreement]").click();
         $x("//span[contains(text(),'Забронировать')]").click();
         $("[data-test-id=notification")
-                .shouldHave(Condition.text("Успешно! Встреча успешно забронирована на " + miData),
+                .shouldHave(Condition.text("Успешно! Встреча успешно забронирована на " + generateDate(5)),
                         Duration.ofSeconds(15));
     }
 
     @Test
-    void cardTest4() {
+    void latinCity() {
         $("[data-test-id=city] input").setValue("Kirov");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 5);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(5));
         $("[data-test-id=name] input").setValue("Антон Антонов");
         $("[data-test-id=phone] input").setValue("+71598641375");
         $("[data-test-id=agreement]").click();
@@ -96,14 +86,10 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest5() {
+    void wrongDate() {
         $("[data-test-id=city] input").setValue("Киров");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 1);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(1));
         $("[data-test-id=name] input").setValue("Петров-Водкин Иван");
         $("[data-test-id=phone] input").setValue("+71598641375");
         $("[data-test-id=agreement]").click();
@@ -113,13 +99,9 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest6() {
+    void noCity() {
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 5);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(6));
         $("[data-test-id=name] input").setValue("Петров-Водкин Иван");
         $("[data-test-id=phone] input").setValue("+71598641375");
         $("[data-test-id=agreement]").click();
@@ -129,7 +111,7 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest7() {
+    void noDate() {
         $("[data-test-id=city] input").setValue("Вологда");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
         $("[data-test-id=name] input").setValue("Петров Иван");
@@ -141,14 +123,10 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest8() {
+    void noName() {
         $("[data-test-id=city] input").setValue("Волгоград");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 4);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(4));
         $("[data-test-id=phone] input").setValue("+71598641375");
         $("[data-test-id=agreement]").click();
         $x("//span[contains(text(),'Забронировать')]").click();
@@ -157,14 +135,10 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest9() {
+    void noPhone() {
         $("[data-test-id=city] input").setValue("Брянск");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 5);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(5));
         $("[data-test-id=name] input").setValue("Фиактистова Анна");
         $("[data-test-id=agreement]").click();
         $x("//span[contains(text(),'Забронировать')]").click();
@@ -173,7 +147,7 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest10() {
+    void emptyForm() {
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
         $("[data-test-id='agreement']").click();
         $x("//span[contains(text(),'Забронировать')]").click();
@@ -182,14 +156,10 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest11() {
+    void latinName() {
         $("[data-test-id=city] input").setValue("Калининград");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 4);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(5));
         $("[data-test-id=name] input").setValue("Anna-Nicolle Smit");
         $("[data-test-id=phone] input").setValue("+72587413692");
         $("[data-test-id=agreement]").click();
@@ -199,14 +169,10 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest12() {
+    void shortPhone() {
         $("[data-test-id=city] input").setValue("Калининград");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 6);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(5));
         $("[data-test-id=name] input").setValue("Анна-Николь Смит");
         $("[data-test-id=phone] input").setValue("+7258741369");
         $("[data-test-id=agreement]").click();
@@ -216,14 +182,10 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest13() {
+    void longPhone() {
         $("[data-test-id=city] input").setValue("Калининград");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 6);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(5));
         $("[data-test-id=name] input").setValue("Анна-Николь Смит");
         $("[data-test-id=phone] input").setValue("+7000000000012");
         $("[data-test-id=agreement]").click();
@@ -233,14 +195,10 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest14() {
+    void noCheckAgreement() {
         $("[data-test-id=city] input").setValue("Санкт-Петербург");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 5);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(5));
         $("[data-test-id=name] input").setValue("Антон Антонов");
         $("[data-test-id=phone] input").setValue("+71598641375");
         $x("//span[contains(text(),'Забронировать')]").click();
@@ -249,14 +207,10 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void cardTest15() {
+    void literInPhone() {
         $("[data-test-id=city] input").setValue("Калининград");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
-        Calendar data = new GregorianCalendar();
-        data.add(Calendar.DAY_OF_YEAR, 6);
-        SimpleDateFormat miFormat = new SimpleDateFormat("dd.MM.yyyy");
-        String miData = miFormat.format(data.getTime());
-        $("[data-test-id=date] input").setValue(miData);
+        $("[data-test-id=date] input").setValue(generateDate(5));
         $("[data-test-id=name] input").setValue("Анна-Николь Смит");
         $("[data-test-id=phone] input").setValue("+phonenumber");
         $("[data-test-id=agreement]").click();
